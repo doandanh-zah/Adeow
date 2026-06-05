@@ -1,9 +1,0 @@
-/* eslint-disable tldraw/no-export-star */
-export * from './constants'
-export { default as getLicenseKey } from './license'
-export * from './mutators'
-export * from './OptimisticAppStore'
-export * from './queries'
-export * from './routes'
-export * from './tlaSchema'
-export * from './types'
