@@ -7,7 +7,7 @@ export function AdeowCanvasClient() {
   const initialData = createInitialCanvasDocument();
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-white">
+    <div className="adeow-canvas-host relative h-screen w-screen overflow-hidden bg-background">
       <div className="h-screen w-screen">
         <CanvasEngine initialData={initialData} />
       </div>
