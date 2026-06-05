@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "../node_modules/@excalidraw/excalidraw/dist/prod/index.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #eef2f7;
+  --panel: rgba(255, 255, 255, 0.88);
+  --border: #e5e7eb;
+  --border-strong: #cbd5e1;
+  --accent: #111827;
+  --accent-2: #4b5563;
+  --muted-foreground: #6b7280;
+  --positive: #15803d;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --shadow-panel: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-panel: var(--panel);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-positive: var(--positive);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-syne);
+  --font-mono: var(--font-jetbrains-mono);
+  --shadow-panel: var(--shadow-panel);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-manrope), sans-serif;
+}
+
+::selection {
+  background: rgba(17, 24, 39, 0.12);
+  color: var(--foreground);
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.excalidraw.theme--light {
+  --color-primary: #111827;
+  --color-primary-darker: #030712;
+  --color-primary-darkest: #000000;
+  --color-primary-light: rgba(17, 24, 39, 0.08);
+  --color-surface-low: #ffffff;
+  --color-surface-mid: #f8fafc;
+  --color-surface-high: #eef2f7;
+  --default-bg-color: #ffffff;
+  --popup-secondary-bg-color: #ffffff;
+  --popup-text-color: #111827;
+}
+
+.excalidraw .App-menu_top,
+.excalidraw .App-toolbar,
+.excalidraw .layer-ui__wrapper__top-right,
+.excalidraw .layer-ui__wrapper__footer {
+  filter: none;
+}
+
+.excalidraw .layer-ui__wrapper__footer-right {
+  display: none;
+}
