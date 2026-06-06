@@ -85,6 +85,8 @@ button {
   --color-surface-low: #f7f8fa;
   --color-surface-mid: #edf1f5;
   --color-surface-high: #e4e9ef;
+  --island-bg-color: rgba(255, 255, 255, 0.98);
+  --popup-bg-color: rgba(255, 255, 255, 0.98);
   --default-bg-color: #f7f8fa;
   --popup-secondary-bg-color: #f7f8fa;
   --popup-text-color: #111827;
@@ -112,6 +114,8 @@ button {
   --button-selected-bg: rgba(250, 204, 21, 0.22);
   --button-selected-border: rgba(250, 204, 21, 0.62);
   --color-selection: #facc15;
+  --island-bg-color: rgba(24, 24, 27, 0.98);
+  --popup-bg-color: rgba(24, 24, 27, 0.98);
   --adeow-control-ring: rgba(250, 204, 21, 0.3);
   --adeow-control-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
   --adeow-button-bg: rgba(24, 24, 27, 0.96);
@@ -161,12 +165,32 @@ button {
   width: auto;
 }
 
+.excalidraw:not(.excalidraw--mobile) .shapes-section .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
 .excalidraw:not(.excalidraw--mobile) .shapes-section .App-toolbar-content {
   justify-content: center;
 }
 
 .excalidraw .layer-ui__wrapper__footer-right {
   display: none;
+}
+
+.adeow-canvas-host .excalidraw .main-menu-trigger,
+.adeow-canvas-host .excalidraw .App-menu__left,
+.adeow-canvas-host .excalidraw .zoom-actions,
+.adeow-canvas-host .excalidraw .undo-redo-buttons {
+  background-color: var(--island-bg-color) !important;
+  box-shadow: var(--shadow-island) !important;
+}
+
+.adeow-canvas-host .excalidraw .App-menu__left {
+  --button-bg: var(--island-bg-color);
+  --button-hover-bg: #f8fafc;
 }
 
 .adeow-canvas-host {

@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerClient } from "@supabase/ssr";
+import { NextRequest, NextResponse } from "next/server";
+import { getSupabasePublicEnv } from "@/lib/supabase/config";
 
 function getSafeNextPath(value: string | null) {
   if (!value || !value.startsWith("/")) {
@@ -24,20 +25,32 @@ function getSafeOrigin(requestUrl: URL) {
   return `${safeUrl.protocol}//${safeUrl.host}`;
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const next = getSafeNextPath(requestUrl.searchParams.get("next"));
+  const response = NextResponse.redirect(
+    `${getSafeOrigin(requestUrl)}${next}`,
+    307,
+  );
 
   if (code) {
-    const supabase = await createSupabaseServerClient();
+    const { url, anonKey } = getSupabasePublicEnv();
+    const supabase = createServerClient(url, anonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          for (const cookie of cookiesToSet) {
+            response.cookies.set(cookie.name, cookie.value, cookie.options);
+          }
+        },
+      },
+    });
+
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  return new NextResponse(null, {
-    status: 307,
-    headers: {
-      location: `${getSafeOrigin(requestUrl)}${next}`,
-    },
-  });
+  return response;
 }

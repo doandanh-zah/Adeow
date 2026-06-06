@@ -1,12 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, ComponentProps } from "react";
 import { CanvasTopRightControls } from "@/components/canvas/CanvasTopRightControls";
-import type { CanvasInitialDocument } from "./document";
+import { getCanvasStorageKey, type CanvasInitialDocument } from "./document";
 
 type CanvasEngineProps = {
+  canvasId: string;
   initialData: CanvasInitialDocument;
 };
 
@@ -30,6 +31,12 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
     type CanvasAppState = Parameters<
       NonNullable<ComponentProps<typeof Excalidraw>["renderTopRightUI"]>
     >[1];
+    type CanvasOnChange = NonNullable<
+      ComponentProps<typeof Excalidraw>["onChange"]
+    >;
+    type CanvasElements = Parameters<CanvasOnChange>[0];
+    type CanvasSceneAppState = Parameters<CanvasOnChange>[1];
+    type CanvasFiles = Parameters<CanvasOnChange>[2];
     type RestorableScene = Parameters<typeof restore>[0];
     type SupportedLangCode = "en" | "vi-VN";
 
@@ -74,14 +81,61 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
       );
     };
 
-    return function CanvasEngineRuntime({ initialData }: CanvasEngineProps) {
+    return function CanvasEngineRuntime({
+      canvasId,
+      initialData,
+    }: CanvasEngineProps) {
       const apiRef = useRef<CanvasApi | null>(null);
       const fileInputRef = useRef<HTMLInputElement | null>(null);
-      const [theme, setTheme] = useState<CanvasTheme>("light");
+      const saveTimeoutRef = useRef<number | null>(null);
+      const [theme, setTheme] = useState<CanvasTheme>(
+        isCanvasTheme(initialData.appState?.theme)
+          ? initialData.appState.theme
+          : "light",
+      );
       const [langCode, setLangCode] = useState<SupportedLangCode>(
         defaultLang.code === "vi-VN" ? "vi-VN" : "en",
       );
       const copy = menuCopy[langCode];
+
+      useEffect(() => {
+        return () => {
+          if (saveTimeoutRef.current !== null) {
+            window.clearTimeout(saveTimeoutRef.current);
+          }
+        };
+      }, []);
+
+      const persistScene = (
+        elements: CanvasElements,
+        appState: CanvasSceneAppState,
+        files: CanvasFiles,
+      ) => {
+        if (typeof window === "undefined") {
+          return;
+        }
+
+        const payload = serializeAsJSON(elements, appState, files, "local");
+        window.localStorage.setItem(getCanvasStorageKey(canvasId), payload);
+      };
+
+      const scheduleScenePersist = (
+        elements: CanvasElements,
+        appState: CanvasSceneAppState,
+        files: CanvasFiles,
+      ) => {
+        if (typeof window === "undefined") {
+          return;
+        }
+
+        if (saveTimeoutRef.current !== null) {
+          window.clearTimeout(saveTimeoutRef.current);
+        }
+
+        saveTimeoutRef.current = window.setTimeout(() => {
+          persistScene(elements, appState, files);
+        }, 250);
+      };
 
       const handleOpenClick = () => {
         fileInputRef.current?.click();
@@ -177,10 +231,17 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
 
       return (
         <Excalidraw
-          initialData={initialData}
+          initialData={
+            initialData as NonNullable<
+              ComponentProps<typeof Excalidraw>["initialData"]
+            >
+          }
           name="ADEOW"
           theme={theme}
           langCode={langCode}
+          onChange={(elements, appState, files) => {
+            scheduleScenePersist(elements, appState, files);
+          }}
           excalidrawAPI={(api) => {
             apiRef.current = api;
           }}

@@ -154,12 +154,12 @@ export function CanvasTopRightControls({
   useEffect(() => {
     let isMounted = true;
 
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getSession().then(({ data }) => {
       if (!isMounted) {
         return;
       }
 
-      setUser(data.user ?? null);
+      setUser(data.session?.user ?? null);
     });
 
     const {
