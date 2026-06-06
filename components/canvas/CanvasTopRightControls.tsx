@@ -5,7 +5,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
+export type CanvasAuthUser = Pick<User, "email" | "user_metadata"> | null;
+
 type CanvasTopRightControlsProps = {
+  initialUser: CanvasAuthUser;
   isLibraryOpen: boolean;
   langCode: "en" | "vi-VN";
   onToggleLibrary: () => void;
@@ -90,7 +93,7 @@ const GoogleBadge = () => (
   </svg>
 );
 
-function getUserLabel(user: User | null, fallback: string) {
+function getUserLabel(user: CanvasAuthUser, fallback: string) {
   if (!user) {
     return fallback;
   }
@@ -111,11 +114,11 @@ function getUserLabel(user: User | null, fallback: string) {
   return fallback;
 }
 
-function getUserInitial(user: User | null, fallback: string) {
+function getUserInitial(user: CanvasAuthUser, fallback: string) {
   return getUserLabel(user, fallback).trim().charAt(0).toUpperCase() || "A";
 }
 
-function getUserAvatarUrl(user: User | null) {
+function getUserAvatarUrl(user: CanvasAuthUser) {
   const avatarUrl =
     typeof user?.user_metadata?.avatar_url === "string"
       ? user.user_metadata.avatar_url
@@ -126,7 +129,6 @@ function getUserAvatarUrl(user: User | null) {
 
 function getOAuthRedirectBase() {
   const url = new URL(window.location.href);
-
   if (
     url.hostname === "0.0.0.0" ||
     url.hostname === "::" ||
@@ -140,6 +142,7 @@ function getOAuthRedirectBase() {
 }
 
 export function CanvasTopRightControls({
+  initialUser,
   isLibraryOpen,
   langCode,
   onToggleLibrary,
@@ -147,19 +150,19 @@ export function CanvasTopRightControls({
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
   const labels = copy[langCode];
   const accountRef = useRef<HTMLDivElement | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<CanvasAuthUser>(initialUser);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isAuthBusy, setIsAuthBusy] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
 
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getUser().then(({ data }) => {
       if (!isMounted) {
         return;
       }
 
-      setUser(data.session?.user ?? null);
+      setUser(data.user ?? null);
     });
 
     const {

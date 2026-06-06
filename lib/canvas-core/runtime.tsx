@@ -3,12 +3,16 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, ComponentProps } from "react";
-import { CanvasTopRightControls } from "@/components/canvas/CanvasTopRightControls";
+import {
+  CanvasTopRightControls,
+  type CanvasAuthUser,
+} from "@/components/canvas/CanvasTopRightControls";
 import { getCanvasStorageKey, type CanvasInitialDocument } from "./document";
 
 type CanvasEngineProps = {
   canvasId: string;
   initialData: CanvasInitialDocument;
+  initialUser: CanvasAuthUser;
 };
 
 export const CanvasEngine = dynamic<CanvasEngineProps>(
@@ -84,6 +88,7 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
     return function CanvasEngineRuntime({
       canvasId,
       initialData,
+      initialUser,
     }: CanvasEngineProps) {
       const apiRef = useRef<CanvasApi | null>(null);
       const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -248,6 +253,7 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
           gridModeEnabled
           renderTopRightUI={(_isMobile, appState) => (
             <CanvasTopRightControls
+              initialUser={initialUser}
               isLibraryOpen={isLibrarySidebarOpen(appState)}
               langCode={langCode}
               onToggleLibrary={() =>

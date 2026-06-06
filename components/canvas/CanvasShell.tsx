@@ -1,9 +1,14 @@
+import type { CanvasAuthUser } from "./CanvasTopRightControls";
 import { AdeowCanvasClient } from "./AdeowCanvasClient";
 
-export function CanvasShell() {
+type CanvasShellProps = {
+  initialUser: CanvasAuthUser;
+};
+
+export function CanvasShell({ initialUser }: CanvasShellProps) {
   return (
     <main className="h-screen w-screen bg-background">
-      <AdeowCanvasClient />
+      <AdeowCanvasClient initialUser={initialUser} />
     </main>
   );
 }

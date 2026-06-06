@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
+import type { CanvasAuthUser } from "@/components/canvas/CanvasTopRightControls";
 import {
   readInitialCanvasDocument,
 } from "@/lib/canvas-core/document";
@@ -30,7 +31,11 @@ const CRITICAL_CANVAS_STYLES = `
 }
 `;
 
-export function AdeowCanvasClient() {
+type AdeowCanvasClientProps = {
+  initialUser: CanvasAuthUser;
+};
+
+export function AdeowCanvasClient({ initialUser }: AdeowCanvasClientProps) {
   const params = useParams<{ id?: string | string[] }>();
   const canvasId =
     typeof params.id === "string" && params.id.trim() ? params.id : "home";
@@ -47,6 +52,7 @@ export function AdeowCanvasClient() {
           <CanvasEngine
             canvasId={canvasId}
             initialData={initialData}
+            initialUser={initialUser}
             key={canvasId}
           />
         ) : null}
