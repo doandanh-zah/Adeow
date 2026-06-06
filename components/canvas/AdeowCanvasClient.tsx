@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import type { CanvasAuthUser } from "@/components/canvas/CanvasTopRightControls";
 import {
   readInitialCanvasDocument,
+  type CanvasInitialDocument,
 } from "@/lib/canvas-core/document";
 import { CanvasEngine } from "@/lib/canvas-core/runtime";
 
@@ -32,26 +33,34 @@ const CRITICAL_CANVAS_STYLES = `
 `;
 
 type AdeowCanvasClientProps = {
+  initialData: CanvasInitialDocument;
   initialUser: CanvasAuthUser;
 };
 
-export function AdeowCanvasClient({ initialUser }: AdeowCanvasClientProps) {
+export function AdeowCanvasClient({
+  initialData,
+  initialUser,
+}: AdeowCanvasClientProps) {
   const params = useParams<{ id?: string | string[] }>();
   const canvasId =
     typeof params.id === "string" && params.id.trim() ? params.id : "home";
 
-  const initialData = useMemo(() => {
+  const resolvedInitialData = useMemo(() => {
+    if (initialUser) {
+      return initialData;
+    }
+
     return readInitialCanvasDocument(canvasId);
-  }, [canvasId]);
+  }, [canvasId, initialData, initialUser]);
 
   return (
     <div className="adeow-canvas-host relative h-screen w-screen overflow-hidden bg-background">
       <style dangerouslySetInnerHTML={{ __html: CRITICAL_CANVAS_STYLES }} />
       <div className="h-screen w-screen">
-        {initialData ? (
+        {resolvedInitialData ? (
           <CanvasEngine
             canvasId={canvasId}
-            initialData={initialData}
+            initialData={resolvedInitialData}
             initialUser={initialUser}
             key={canvasId}
           />

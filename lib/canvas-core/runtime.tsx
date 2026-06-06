@@ -7,6 +7,7 @@ import {
   CanvasTopRightControls,
   type CanvasAuthUser,
 } from "@/components/canvas/CanvasTopRightControls";
+import { saveCanvasDocumentToDB } from "@/lib/supabase/canvases";
 import { getCanvasStorageKey, type CanvasInitialDocument } from "./document";
 
 type CanvasEngineProps = {
@@ -121,7 +122,14 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
         }
 
         const payload = serializeAsJSON(elements, appState, files, "local");
-        window.localStorage.setItem(getCanvasStorageKey(canvasId), payload);
+        void saveCanvasDocumentToDB(canvasId, payload).then((didSaveToDB) => {
+          if (didSaveToDB) {
+            window.localStorage.removeItem(getCanvasStorageKey(canvasId));
+            return;
+          }
+
+          window.localStorage.setItem(getCanvasStorageKey(canvasId), payload);
+        });
       };
 
       const scheduleScenePersist = (

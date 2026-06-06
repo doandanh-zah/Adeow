@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
@@ -148,6 +149,7 @@ export function CanvasTopRightControls({
   onToggleLibrary,
 }: CanvasTopRightControlsProps) {
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
+  const router = useRouter();
   const labels = copy[langCode];
   const accountRef = useRef<HTMLDivElement | null>(null);
   const [user, setUser] = useState<CanvasAuthUser>(initialUser);
@@ -167,16 +169,20 @@ export function CanvasTopRightControls({
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
       setIsAccountOpen(false);
+
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        router.refresh();
+      }
     });
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [router, supabase]);
 
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent) => {
