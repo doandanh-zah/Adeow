@@ -12,8 +12,8 @@ export default async function CanvasPage() {
       initialUser={
         user
           ? {
-              email: user.email ?? null,
-              user_metadata: user.user_metadata ?? null,
+              email: user.email,
+              user_metadata: user.user_metadata,
             }
           : null
       }
