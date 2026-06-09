@@ -1,11 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabasePublicEnv } from "./config";
+import { getSupabasePublicEnv, hasSupabasePublicEnv } from "./config";
 
 export async function updateSupabaseSession(request: NextRequest) {
   let response = NextResponse.next({
     request,
   });
+
+  if (!hasSupabasePublicEnv()) {
+    return response;
+  }
 
   const { url, publishableKey } = getSupabasePublicEnv();
   const supabase = createServerClient(url, publishableKey, {

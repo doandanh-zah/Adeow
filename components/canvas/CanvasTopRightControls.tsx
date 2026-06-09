@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { hasSupabasePublicEnv } from "@/lib/supabase/config";
 
 export type CanvasAuthUser = Pick<User, "email" | "user_metadata"> | null;
 
@@ -148,7 +149,11 @@ export function CanvasTopRightControls({
   langCode,
   onToggleLibrary,
 }: CanvasTopRightControlsProps) {
-  const supabase = useMemo(() => createSupabaseBrowserClient(), []);
+  const isSupabaseEnabled = useMemo(() => hasSupabasePublicEnv(), []);
+  const supabase = useMemo(
+    () => (isSupabaseEnabled ? createSupabaseBrowserClient() : null),
+    [isSupabaseEnabled],
+  );
   const router = useRouter();
   const labels = copy[langCode];
   const accountRef = useRef<HTMLDivElement | null>(null);
@@ -157,6 +162,10 @@ export function CanvasTopRightControls({
   const [isAuthBusy, setIsAuthBusy] = useState(false);
 
   useEffect(() => {
+    if (!supabase) {
+      return;
+    }
+
     let isMounted = true;
 
     supabase.auth.getUser().then(({ data }) => {
@@ -209,6 +218,10 @@ export function CanvasTopRightControls({
   }, []);
 
   const handleSignIn = async (forceAccountChooser = true) => {
+    if (!supabase) {
+      return;
+    }
+
     setIsAuthBusy(true);
 
     const redirectTo = new URL("/auth/callback", getOAuthRedirectBase());
@@ -235,6 +248,10 @@ export function CanvasTopRightControls({
   };
 
   const handleSignOut = async () => {
+    if (!supabase) {
+      return;
+    }
+
     setIsAuthBusy(true);
 
     await supabase.auth.signOut();
@@ -250,6 +267,10 @@ export function CanvasTopRightControls({
   const avatarUrl = getUserAvatarUrl(user);
   const openAccountMenu = () => {
     if (!user) {
+      if (!supabase) {
+        return;
+      }
+
       void handleSignIn(true);
       return;
     }
@@ -323,7 +344,7 @@ export function CanvasTopRightControls({
         ) : (
           <button
             className="adeow-dock-primary-button"
-            disabled={isAuthBusy}
+            disabled={isAuthBusy || !supabase}
             onClick={() => {
               void handleSignIn(true);
             }}

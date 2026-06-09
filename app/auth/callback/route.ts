@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { hasSupabasePublicEnv } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 function getSafeNextPath(value: string | null) {
@@ -28,6 +29,14 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   const next = getSafeNextPath(searchParams.get("next"));
+  const errorOrigin =
+    process.env.NODE_ENV === "development"
+      ? getSafeOrigin(new URL(request.url))
+      : origin;
+
+  if (!hasSupabasePublicEnv()) {
+    return NextResponse.redirect(`${errorOrigin}/auth/auth-code-error`, 307);
+  }
 
   if (code) {
     const isLocalEnv = process.env.NODE_ENV === "development";
@@ -47,11 +56,6 @@ export async function GET(request: NextRequest) {
 
     console.error("Supabase auth code exchange failed", error);
   }
-
-  const errorOrigin =
-    process.env.NODE_ENV === "development"
-      ? getSafeOrigin(new URL(request.url))
-      : origin;
 
   return NextResponse.redirect(`${errorOrigin}/auth/auth-code-error`, 307);
 }

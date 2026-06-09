@@ -146,7 +146,7 @@ button {
 
 .excalidraw .layer-ui__wrapper__top-right {
   position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
   right: max(1rem, env(safe-area-inset-right, 0px));
   z-index: var(--zIndex-layerUI);
 }
@@ -174,6 +174,139 @@ button {
 
 .excalidraw:not(.excalidraw--mobile) .shapes-section .App-toolbar-content {
   justify-content: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label] {
+    position: relative;
+  }
+
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]::after {
+    position: absolute;
+    left: 50%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 12;
+    transition:
+      opacity 120ms ease,
+      transform 120ms ease;
+  }
+
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]::before {
+    bottom: calc(100% + 0.25rem);
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--island-bg-color);
+    box-shadow: var(--shadow-island);
+    content: "";
+    transform: translate(-50%, 0.25rem) rotate(45deg);
+  }
+
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]::after {
+    bottom: calc(100% + 0.5rem);
+    max-width: 12rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--border-radius-md);
+    background: var(--island-bg-color);
+    box-shadow: var(--shadow-island);
+    color: var(--color-on-surface);
+    content: attr(data-adeow-tool-label);
+    font-family: var(--ui-font);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    transform: translate(-50%, 0.25rem);
+    white-space: nowrap;
+  }
+
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:hover::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-visible::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-within::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:hover::after,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-visible::after,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-within::after {
+    opacity: 1;
+  }
+
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:hover::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-visible::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-within::before {
+    transform: translate(-50%, 0) rotate(45deg);
+  }
+
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:hover::after,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-visible::after,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]:focus-within::after {
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]::before,
+  .adeow-canvas-host
+    .excalidraw
+    .App-toolbar-container
+    [data-adeow-tool-label]::after {
+    transition: none;
+  }
 }
 
 .excalidraw .layer-ui__wrapper__footer-right {
@@ -208,6 +341,210 @@ button {
   justify-content: flex-end;
   height: auto;
   min-height: var(--lg-button-size);
+}
+
+.adeow-page-switcher {
+  --adeow-page-button-size: 2.25rem;
+  --adeow-page-radius-lg: 0.5rem;
+  --adeow-page-radius-md: 0.375rem;
+  --adeow-page-bg: rgba(255, 255, 255, 0.98);
+  --adeow-page-hover: #f8fafc;
+  --adeow-page-row-active: #f8fafc;
+  --adeow-page-text: #1b1b1f;
+  --adeow-page-muted: #6b7280;
+  --adeow-page-border: #e4e9ef;
+  --adeow-page-active: #38bdf8;
+  --adeow-page-shadow: 0px 0px 0.9310142993927002px 0px rgba(0, 0, 0, 0.17),
+    0px 0px 3.1270833015441895px 0px rgba(0, 0, 0, 0.08),
+    0px 7px 14px 0px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  left: calc(max(1rem, env(safe-area-inset-left, 0px)) + var(--adeow-page-button-size) + 0.5rem);
+  z-index: 6;
+  pointer-events: none;
+  font-family:
+    Assistant,
+    system-ui,
+    BlinkMacSystemFont,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.adeow-page-switcher[data-theme="dark"] {
+  --adeow-page-bg: rgba(24, 24, 27, 0.98);
+  --adeow-page-hover: #363541;
+  --adeow-page-row-active: #363541;
+  --adeow-page-text: #e3e3e8;
+  --adeow-page-muted: #a1a1aa;
+  --adeow-page-border: rgba(250, 204, 21, 0.26);
+  --adeow-page-active: #facc15;
+}
+
+.adeow-canvas-host .excalidraw .scroll-back-to-content {
+  position: fixed !important;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem) !important;
+  bottom: auto !important;
+  left: 50% !important;
+  z-index: 10 !important;
+}
+
+.adeow-page-switcher-row {
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.adeow-page-switcher-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.adeow-page-switcher-trigger {
+  appearance: none;
+  display: inline-flex;
+  min-width: 7rem;
+  max-width: 13rem;
+  height: var(--adeow-page-button-size);
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 0.75rem;
+  border: none;
+  border-radius: var(--adeow-page-radius-lg);
+  background: var(--adeow-page-bg);
+  box-shadow: var(--adeow-page-shadow);
+  color: var(--adeow-page-text);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease,
+    color 120ms ease;
+}
+
+.adeow-page-switcher-trigger:hover,
+.adeow-page-switcher-trigger[data-active="true"] {
+  background: var(--adeow-page-hover);
+}
+
+.adeow-page-switcher-trigger[data-active="true"] {
+  box-shadow: var(--adeow-page-shadow);
+}
+
+.adeow-page-switcher-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--adeow-page-active);
+}
+
+.adeow-page-switcher-trigger-label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adeow-page-switcher-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  width: min(17rem, calc(100vw - 1rem));
+  padding: 0.75rem;
+  border-radius: var(--adeow-page-radius-lg);
+  background: var(--adeow-page-bg);
+  box-shadow: var(--adeow-page-shadow);
+  pointer-events: auto;
+  box-sizing: border-box;
+}
+
+.adeow-page-switcher-list {
+  display: flex;
+  max-height: 14rem;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.adeow-page-switcher-menu-item,
+.adeow-page-switcher-create {
+  appearance: none;
+  display: flex;
+  height: 2rem;
+  width: calc(100% - 2px);
+  align-items: center;
+  justify-content: space-between;
+  margin: 1px;
+  padding: 0 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--adeow-page-radius-md);
+  background: transparent;
+  color: var(--adeow-page-text);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.adeow-page-switcher-menu-item:hover,
+.adeow-page-switcher-create:hover {
+  background: var(--adeow-page-hover);
+}
+
+.adeow-page-switcher-menu-item[data-active="true"] {
+  background: var(--adeow-page-row-active);
+}
+
+.adeow-page-switcher-menu-item:focus-visible,
+.adeow-page-switcher-create:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--adeow-page-active);
+}
+
+.adeow-page-switcher-item-label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adeow-page-switcher-footer {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--adeow-page-border);
+}
+
+.adeow-page-switcher-create:disabled {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.adeow-page-switcher-status,
+.adeow-page-switcher-error {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.adeow-page-switcher-status {
+  color: var(--adeow-page-muted);
+}
+
+.adeow-page-switcher-error {
+  color: var(--danger);
 }
 
 .adeow-control-anchor {
@@ -533,6 +870,30 @@ button {
   .adeow-top-right-dock {
     min-height: calc(2rem + 0.5rem);
     padding: 0.25rem;
+  }
+
+  .adeow-page-switcher {
+    --adeow-page-button-size: 2.25rem;
+    top: calc(env(safe-area-inset-top, 0px) + 1rem);
+    left: calc(max(0.5rem, env(safe-area-inset-left, 0px)) + var(--adeow-page-button-size) + 0.5rem);
+  }
+
+  .adeow-page-switcher-trigger {
+    max-width: 8.75rem;
+    padding: 0 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .adeow-page-switcher-popover {
+    min-width: min(15rem, calc(100vw - 1rem));
+  }
+
+  .adeow-canvas-host .excalidraw .scroll-back-to-content {
+    position: fixed !important;
+    top: calc(env(safe-area-inset-top, 0px) + 1rem) !important;
+    bottom: auto !important;
+    left: 50% !important;
+    z-index: 10 !important;
   }
 
   .adeow-dock-avatar-button,

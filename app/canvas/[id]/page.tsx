@@ -3,6 +3,7 @@ import {
   createInitialCanvasDocument,
   type CanvasInitialDocument,
 } from "@/lib/canvas-core/document";
+import { hasSupabasePublicEnv } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { loadCanvasDocumentForUser } from "@/lib/supabase/canvases";
 
@@ -12,17 +13,23 @@ export default async function CanvasPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
   let initialData: CanvasInitialDocument = createInitialCanvasDocument();
+  let user: Awaited<
+    ReturnType<Awaited<ReturnType<typeof createSupabaseServerClient>>["auth"]["getUser"]>
+  >["data"]["user"] | null = null;
 
-  if (user) {
-    const document = await loadCanvasDocumentForUser(supabase, id, user.id);
+  if (hasSupabasePublicEnv()) {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase.auth.getUser();
 
-    if (document) {
-      initialData = createInitialCanvasDocument(document);
+    user = data.user;
+
+    if (user) {
+      const document = await loadCanvasDocumentForUser(supabase, id, user.id);
+
+      if (document) {
+        initialData = createInitialCanvasDocument(document);
+      }
     }
   }
 

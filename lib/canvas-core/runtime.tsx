@@ -1,19 +1,28 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { ChangeEvent, ComponentProps } from "react";
 import {
   CanvasTopRightControls,
   type CanvasAuthUser,
 } from "@/components/canvas/CanvasTopRightControls";
-import { saveCanvasDocumentToDB } from "@/lib/supabase/canvases";
-import { getCanvasStorageKey, type CanvasInitialDocument } from "./document";
+import { getCanvasTitle, saveCanvasDocumentToDB } from "@/lib/supabase/canvases";
+import type { CanvasLanguageCode, CanvasTheme } from "@/lib/canvas-core/ui";
+import {
+  getCanvasStorageKey,
+  type CanvasInitialDocument,
+  upsertLocalCanvasDirectoryEntry,
+} from "./document";
 
 type CanvasEngineProps = {
   canvasId: string;
   initialData: CanvasInitialDocument;
   initialUser: CanvasAuthUser;
+  langCode: CanvasLanguageCode;
+  onLangCodeChange: (langCode: CanvasLanguageCode) => void;
+  onThemeChange: (theme: CanvasTheme) => void;
+  theme: CanvasTheme;
 };
 
 export const CanvasEngine = dynamic<CanvasEngineProps>(
@@ -23,7 +32,6 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
       Excalidraw,
       MainMenu,
       WelcomeScreen,
-      defaultLang,
       restore,
       serializeAsJSON,
     } = canvasSdk;
@@ -32,7 +40,6 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
     type CanvasApi = Parameters<
       NonNullable<ComponentProps<typeof Excalidraw>["excalidrawAPI"]>
     >[0];
-    type CanvasTheme = NonNullable<ComponentProps<typeof Excalidraw>["theme"]>;
     type CanvasAppState = Parameters<
       NonNullable<ComponentProps<typeof Excalidraw>["renderTopRightUI"]>
     >[1];
@@ -43,17 +50,16 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
     type CanvasSceneAppState = Parameters<CanvasOnChange>[1];
     type CanvasFiles = Parameters<CanvasOnChange>[2];
     type RestorableScene = Parameters<typeof restore>[0];
-    type SupportedLangCode = "en" | "vi-VN";
 
     const supportedLanguages: Array<{
-      code: SupportedLangCode;
+      code: CanvasLanguageCode;
       label: string;
     }> = [
       { code: "en", label: "English" },
       { code: "vi-VN", label: "Tiếng Việt" },
     ];
     const menuCopy: Record<
-      SupportedLangCode,
+      CanvasLanguageCode,
       {
         openFile: string;
         saveFile: string;
@@ -90,18 +96,14 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
       canvasId,
       initialData,
       initialUser,
+      langCode,
+      onLangCodeChange,
+      onThemeChange,
+      theme,
     }: CanvasEngineProps) {
       const apiRef = useRef<CanvasApi | null>(null);
       const fileInputRef = useRef<HTMLInputElement | null>(null);
       const saveTimeoutRef = useRef<number | null>(null);
-      const [theme, setTheme] = useState<CanvasTheme>(
-        isCanvasTheme(initialData.appState?.theme)
-          ? initialData.appState.theme
-          : "light",
-      );
-      const [langCode, setLangCode] = useState<SupportedLangCode>(
-        defaultLang.code === "vi-VN" ? "vi-VN" : "en",
-      );
       const copy = menuCopy[langCode];
 
       useEffect(() => {
@@ -129,6 +131,10 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
           }
 
           window.localStorage.setItem(getCanvasStorageKey(canvasId), payload);
+          upsertLocalCanvasDirectoryEntry({
+            id: canvasId,
+            title: getCanvasTitle(canvasId),
+          });
         });
       };
 
@@ -218,7 +224,7 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
             api.addFiles(Object.values(restored.files));
           }
           if (isCanvasTheme(restored.appState?.theme)) {
-            setTheme(restored.appState.theme);
+            onThemeChange(restored.appState.theme);
           }
           api.history.clear();
         } catch {
@@ -296,7 +302,7 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
               {supportedLanguages.map((language) => (
                 <MainMenu.Item
                   key={language.code}
-                  onSelect={() => setLangCode(language.code)}
+                  onSelect={() => onLangCodeChange(language.code)}
                   selected={langCode === language.code}
                 >
                   {language.label}
@@ -305,7 +311,7 @@ export const CanvasEngine = dynamic<CanvasEngineProps>(
             </MainMenu.Group>
             <MainMenu.Separator />
             <DefaultItems.ToggleTheme
-              onSelect={(nextTheme) => setTheme(nextTheme)}
+              onSelect={(nextTheme) => onThemeChange(nextTheme)}
             />
             <DefaultItems.ChangeCanvasBackground />
           </MainMenu>
