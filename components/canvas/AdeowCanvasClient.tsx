@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { CanvasPageSwitcher } from "@/components/canvas/CanvasPageSwitcher";
-import { CanvasToolbarTooltips } from "@/components/canvas/CanvasToolbarTooltips";
 import type { CanvasAuthUser } from "@/components/canvas/CanvasTopRightControls";
 import {
   readInitialCanvasDocument,
@@ -18,13 +17,6 @@ import { getCanvasTitle } from "@/lib/supabase/canvases";
 import { CanvasEngine } from "@/lib/canvas-core/runtime";
 
 const CRITICAL_CANVAS_STYLES = `
-.excalidraw:not(.excalidraw--mobile) .shapes-section .dropdown-menu {
-  top: auto !important;
-  bottom: calc(100% + 0.5rem) !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-}
-
 .excalidraw .main-menu-trigger,
 .excalidraw .App-menu__left,
 .excalidraw .zoom-actions,
@@ -104,7 +96,6 @@ export function AdeowCanvasClient({
         langCode={langCode}
         theme={theme}
       />
-      <CanvasToolbarTooltips langCode={langCode} />
       <div className="h-screen w-screen">
         {resolvedInitialData ? (
           <CanvasEngine

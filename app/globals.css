@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "../node_modules/@excalidraw/excalidraw/dist/prod/index.css";
 
+@font-face {
+  font-display: swap;
+  font-family: "Comic Shanns";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../node_modules/@excalidraw/excalidraw/dist/prod/fonts/ComicShanns/ComicShanns-Regular-279a7b317d12eb88de06167bd672b4b4.woff2")
+    format("woff2");
+}
+
 :root {
   --background: #f4f6f8;
   --foreground: #111827;
@@ -151,162 +160,14 @@ button {
   z-index: var(--zIndex-layerUI);
 }
 
-.excalidraw:not(.excalidraw--mobile) .shapes-section {
-  position: fixed;
-  left: 50%;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
-  z-index: var(--zIndex-layerUI);
-  width: max-content;
-  justify-self: center;
-  transform: translateX(-50%);
+.adeow-canvas-engine-shell {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
-.excalidraw:not(.excalidraw--mobile) .shapes-section .App-toolbar {
-  width: auto;
-}
-
-.excalidraw:not(.excalidraw--mobile) .shapes-section .dropdown-menu {
-  top: auto;
-  bottom: 100%;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.excalidraw:not(.excalidraw--mobile) .shapes-section .App-toolbar-content {
-  justify-content: center;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label] {
-    position: relative;
-  }
-
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]::after {
-    position: absolute;
-    left: 50%;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 12;
-    transition:
-      opacity 120ms ease,
-      transform 120ms ease;
-  }
-
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]::before {
-    bottom: calc(100% + 0.25rem);
-    width: 0.5rem;
-    height: 0.5rem;
-    background: var(--island-bg-color);
-    box-shadow: var(--shadow-island);
-    content: "";
-    transform: translate(-50%, 0.25rem) rotate(45deg);
-  }
-
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]::after {
-    bottom: calc(100% + 0.5rem);
-    max-width: 12rem;
-    padding: 0.375rem 0.625rem;
-    border-radius: var(--border-radius-md);
-    background: var(--island-bg-color);
-    box-shadow: var(--shadow-island);
-    color: var(--color-on-surface);
-    content: attr(data-adeow-tool-label);
-    font-family: var(--ui-font);
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1.15;
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-    transform: translate(-50%, 0.25rem);
-    white-space: nowrap;
-  }
-
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:hover::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-visible::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-within::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:hover::after,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-visible::after,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-within::after {
-    opacity: 1;
-  }
-
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:hover::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-visible::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-within::before {
-    transform: translate(-50%, 0) rotate(45deg);
-  }
-
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:hover::after,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-visible::after,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]:focus-within::after {
-    transform: translate(-50%, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]::before,
-  .adeow-canvas-host
-    .excalidraw
-    .App-toolbar-container
-    [data-adeow-tool-label]::after {
-    transition: none;
-  }
+.adeow-canvas-host .excalidraw .shapes-section {
+  display: none !important;
 }
 
 .excalidraw .layer-ui__wrapper__footer-right {
@@ -328,6 +189,1007 @@ button {
 
 .adeow-canvas-host {
   position: relative;
+}
+
+.adeow-canvas-toolbar {
+  --island-bg-color: rgba(255, 255, 255, 0.98);
+  --popup-bg-color: rgba(255, 255, 255, 0.98);
+  --default-border-color: #e4e9ef;
+  --shadow-island: 0px 0px 0.9310142993927002px 0px rgba(0, 0, 0, 0.17),
+    0px 0px 3.1270833015441895px 0px rgba(0, 0, 0, 0.08),
+    0px 7px 14px 0px rgba(0, 0, 0, 0.05);
+  --color-on-surface: #1b1b1f;
+  --button-hover-bg: #f8fafc;
+  --button-active-border: #7dd3fc;
+  --button-selected-border: #7dd3fc;
+  --color-surface-primary-container: #dbeafe;
+  --color-on-primary-container: #0c4a6e;
+  --focus-highlight-color: #38bdf8;
+  --color-border-outline-variant: #c5c5d0;
+  --border-radius-md: 0.375rem;
+  --ui-font: Assistant, system-ui, BlinkMacSystemFont, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+  z-index: var(--zIndex-layerUI, 6);
+  display: flex;
+  max-width: calc(100vw - 1rem);
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: 1px solid var(--default-border-color);
+  border-radius: 1.5rem;
+  background: var(--island-bg-color);
+  box-shadow: var(--shadow-island);
+  color: var(--color-on-surface);
+  font-family: var(--ui-font, var(--font-manrope), sans-serif);
+  pointer-events: auto;
+  transform: translateX(-50%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.adeow-canvas-toolbar[data-theme="dark"] {
+  --island-bg-color: rgba(24, 24, 27, 0.98);
+  --popup-bg-color: rgba(24, 24, 27, 0.98);
+  --default-border-color: rgba(250, 204, 21, 0.26);
+  --shadow-island: 0 14px 28px rgba(0, 0, 0, 0.28);
+  --color-on-surface: #e3e3e8;
+  --button-hover-bg: #363541;
+  --button-active-border: rgba(250, 204, 21, 0.55);
+  --button-selected-border: rgba(250, 204, 21, 0.62);
+  --color-surface-primary-container: rgba(250, 204, 21, 0.22);
+  --color-on-primary-container: #fff7cc;
+  --focus-highlight-color: #facc15;
+  --color-border-outline-variant: #46464f;
+}
+
+.adeow-canvas-toolbar-group {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  border-left: 1px solid var(--default-border-color);
+}
+
+.adeow-canvas-toolbar-group:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.adeow-canvas-toolbar-group:last-child {
+  padding-right: 0;
+}
+
+.adeow-canvas-tool-button,
+.adeow-canvas-toolbar-menu-button,
+.adeow-canvas-toolbar-primary-action,
+.adeow-canvas-stamp-button {
+  appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.adeow-canvas-tool-button {
+  position: relative;
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 0.875rem;
+  background: transparent;
+  color: var(--color-on-surface);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.adeow-canvas-tool-button svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.adeow-canvas-tool-button:hover {
+  background: var(--button-hover-bg);
+}
+
+.adeow-canvas-tool-button:active {
+  transform: translateY(1px);
+}
+
+.adeow-canvas-tool-button[data-active="true"] {
+  border-color: var(--button-selected-border, var(--button-active-border));
+  background: var(--color-surface-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.adeow-canvas-tool-button:focus-visible,
+.adeow-canvas-toolbar-menu-button:focus-visible,
+.adeow-canvas-toolbar-primary-action:focus-visible,
+.adeow-canvas-stamp-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-highlight-color);
+}
+
+.adeow-canvas-toolbar-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.adeow-canvas-toolbar-menu {
+  position: absolute;
+  bottom: calc(100% + 0.75rem);
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  min-width: 13.5rem;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.75rem;
+  border: 1px solid var(--default-border-color);
+  border-radius: 1rem;
+  background: var(--popup-bg-color);
+  box-shadow: var(--shadow-island);
+  color: var(--color-on-surface);
+  transform: translateX(-50%);
+}
+
+.adeow-canvas-toolbar-menu::after {
+  position: absolute;
+  left: 50%;
+  bottom: -0.28rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 1px solid var(--default-border-color);
+  border-bottom: 1px solid var(--default-border-color);
+  background: var(--popup-bg-color);
+  content: "";
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.adeow-canvas-toolbar-menu-title {
+  color: var(--color-on-surface);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.adeow-canvas-toolbar-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.375rem;
+}
+
+.adeow-canvas-toolbar-menu-button {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--color-on-surface);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1;
+  text-align: left;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.adeow-canvas-toolbar-menu-button:hover,
+.adeow-canvas-toolbar-primary-action:hover,
+.adeow-canvas-stamp-button:hover {
+  background: var(--button-hover-bg);
+}
+
+.adeow-canvas-toolbar-menu-icon {
+  display: inline-flex;
+  width: 1.375rem;
+  height: 1.375rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.adeow-canvas-toolbar-menu-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.adeow-canvas-toolbar-primary-action {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--button-selected-border, var(--button-active-border));
+  border-radius: 0.75rem;
+  background: var(--color-surface-primary-container);
+  color: var(--color-on-primary-container);
+  font-size: 0.8125rem;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.adeow-canvas-stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem;
+  width: min(24rem, calc(100vw - 2rem));
+}
+
+.adeow-canvas-stamp-button {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--color-on-surface);
+  line-height: 1;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+
+.adeow-canvas-stamp-button:active {
+  transform: translateY(1px);
+}
+
+.adeow-canvas-stamp-symbol {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.adeow-canvas-stamp-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.adeow-embed {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.adeow-sheet-embed {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #111827;
+  font-family:
+    "Comic Shanns",
+    "Comic Sans MS",
+    "Comic Sans",
+    cursive;
+}
+
+.adeow-sheet-toolbar,
+.adeow-code-toolbar {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.55);
+  box-sizing: border-box;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.adeow-sheet-toolbar button,
+.adeow-code-toolbar select {
+  min-height: 1.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  border-radius: 0.45rem;
+  background: #f8fafc;
+  color: #111827;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.adeow-sheet-toolbar button {
+  padding: 0 0.45rem;
+  cursor: pointer;
+}
+
+.adeow-sheet-grid {
+  display: grid;
+  flex: 1;
+  overflow: auto;
+  background:
+    linear-gradient(#e2e8f0, #e2e8f0) 0 0 / 100% 1px no-repeat,
+    #ffffff;
+}
+
+.adeow-sheet-corner,
+.adeow-sheet-header,
+.adeow-sheet-row-header,
+.adeow-sheet-cell {
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+  box-sizing: border-box;
+}
+
+.adeow-sheet-corner,
+.adeow-sheet-header,
+.adeow-sheet-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.adeow-sheet-header {
+  position: relative;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.adeow-sheet-row-header {
+  position: relative;
+}
+
+.adeow-sheet-size {
+  color: #94a3b8;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.55rem;
+}
+
+.adeow-sheet-col-resizer,
+.adeow-sheet-row-resizer {
+  position: absolute;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  transition:
+    background-color 120ms ease,
+    opacity 120ms ease;
+}
+
+.adeow-sheet-col-resizer {
+  top: 0;
+  right: -0.25rem;
+  bottom: 0;
+  width: 0.5rem;
+  cursor: col-resize;
+}
+
+.adeow-sheet-row-resizer {
+  right: 0;
+  bottom: -0.25rem;
+  left: 0;
+  height: 0.5rem;
+  cursor: row-resize;
+}
+
+.adeow-sheet-header:hover .adeow-sheet-col-resizer,
+.adeow-sheet-row-header:hover .adeow-sheet-row-resizer,
+.adeow-sheet-col-resizer:focus-visible,
+.adeow-sheet-row-resizer:focus-visible {
+  background: #38bdf8;
+  opacity: 0.8;
+}
+
+.adeow-sheet-col-resizer:focus-visible,
+.adeow-sheet-row-resizer:focus-visible,
+.adeow-sheet-toolbar button:focus-visible,
+.adeow-code-toolbar select:focus-visible,
+.adeow-code-textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #38bdf8;
+}
+
+.adeow-sheet-cell {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0.55rem 0.65rem;
+  border-top: none;
+  border-left: none;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.25;
+  outline: none;
+  resize: none;
+}
+
+.adeow-sheet-cell:focus {
+  background: #eff6ff;
+  box-shadow: inset 0 0 0 2px #38bdf8;
+}
+
+.adeow-code-embed {
+  --adeow-code-shell: #ffffff;
+  --adeow-code-header: #f7f7f7;
+  --adeow-code-gutter: #f7f7f7;
+  --adeow-code-border: rgba(0, 0, 0, 0.12);
+  --adeow-code-fg: #111827;
+  --adeow-code-muted: #6b7280;
+  --adeow-code-input: #ffffff;
+  --adeow-code-input-border: rgba(0, 0, 0, 0.1);
+  --adeow-code-active-line: rgba(13, 153, 255, 0.08);
+  --adeow-code-selection: rgba(13, 153, 255, 0.22);
+  --adeow-code-caret: #111827;
+  --adeow-code-accent: #0d99ff;
+  --adeow-code-keyword: #9f1239;
+  --adeow-code-function: #111827;
+  --adeow-code-type: #0f766e;
+  --adeow-code-string: #92400e;
+  --adeow-code-number: #b45309;
+  --adeow-code-comment: #64748b;
+  --adeow-code-builtin: #0369a1;
+  --adeow-code-constant: #a16207;
+  --adeow-code-property: #0f172a;
+  --adeow-code-tag: #be123c;
+  --adeow-code-attribute: #0f766e;
+  --adeow-code-operator: #334155;
+  --adeow-code-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 12px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--adeow-code-border);
+  border-radius: 0.5rem;
+  background: var(--adeow-code-shell);
+  box-shadow: var(--adeow-code-shadow);
+  color: var(--adeow-code-fg);
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+}
+
+.adeow-code-embed:focus-within {
+  border-color: color-mix(in srgb, var(--adeow-code-accent) 72%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--adeow-code-accent) 24%, transparent),
+    var(--adeow-code-shadow);
+}
+
+.adeow-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  border-bottom: 1px solid var(--adeow-code-border);
+  background: var(--adeow-code-header);
+  color: var(--adeow-code-fg);
+  font-family: var(--font-manrope), Assistant, sans-serif;
+}
+
+.adeow-code-file-group,
+.adeow-code-header-meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.adeow-code-file-group {
+  flex: 1 1 auto;
+  gap: 0.5rem;
+}
+
+.adeow-code-header-meta {
+  flex: 0 0 auto;
+  gap: 0.625rem;
+}
+
+.adeow-code-file-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--adeow-code-accent);
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, var(--adeow-code-accent) 14%, transparent);
+}
+
+.adeow-code-title-input {
+  min-width: 0;
+  height: 1.875rem;
+  flex: 1 1 auto;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: var(--adeow-code-input);
+  color: var(--adeow-code-fg);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0 0.5rem;
+  transition:
+    background 120ms ease-out,
+    border-color 120ms ease-out,
+    box-shadow 120ms ease-out;
+}
+
+.adeow-code-title-input::placeholder {
+  color: var(--adeow-code-muted);
+}
+
+.adeow-code-title-input:hover,
+.adeow-code-title-input:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--adeow-code-input) 72%, white);
+}
+
+.adeow-code-title-input:focus-visible {
+  border-color: color-mix(in srgb, var(--adeow-code-accent) 64%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--adeow-code-accent) 18%, transparent);
+}
+
+.adeow-code-stat {
+  display: inline-flex;
+  height: 1.75rem;
+  align-items: center;
+  padding: 0 0.5rem;
+  border: 1px solid var(--adeow-code-input-border);
+  border-radius: 0.375rem;
+  background: var(--adeow-code-input);
+  color: var(--adeow-code-muted);
+  font-family: var(--font-manrope), Assistant, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.adeow-code-language-select {
+  width: clamp(7.4rem, 32vw, 9.6rem);
+  min-width: 7.4rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--adeow-code-input-border);
+  border-radius: 0.375rem;
+  background: var(--adeow-code-input);
+  color: var(--adeow-code-fg);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 0.5rem;
+  transition:
+    background 120ms ease-out,
+    border-color 120ms ease-out,
+    box-shadow 120ms ease-out;
+}
+
+.adeow-code-language-select:hover,
+.adeow-code-language-select:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--adeow-code-input) 72%, white);
+}
+
+.adeow-code-language-select:focus-visible {
+  border-color: color-mix(in srgb, var(--adeow-code-accent) 64%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--adeow-code-accent) 18%, transparent);
+}
+
+.adeow-code-body {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: auto minmax(0, max-content);
+  background: var(--adeow-code-shell);
+  overflow: auto;
+  scrollbar-color: color-mix(in srgb, var(--adeow-code-muted) 42%, transparent)
+    transparent;
+  scrollbar-width: thin;
+}
+
+.adeow-code-body::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.adeow-code-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.adeow-code-body::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--adeow-code-muted) 46%, transparent);
+  background-clip: padding-box;
+}
+
+.adeow-code-lines {
+  display: flex;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 2.75rem;
+  min-height: var(--adeow-code-content-height);
+  flex-direction: column;
+  padding: 0.75rem 0.5rem 0.75rem 0.375rem;
+  border-right: 1px solid var(--adeow-code-border);
+  background: var(--adeow-code-gutter);
+  color: var(--adeow-code-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.375rem;
+  text-align: right;
+  user-select: none;
+}
+
+.adeow-code-line-number {
+  display: block;
+  min-height: 1.375rem;
+  border-radius: 0.25rem;
+}
+
+.adeow-code-editor {
+  position: relative;
+  min-width: var(--adeow-code-content-width);
+  min-height: var(--adeow-code-content-height);
+  background: var(--adeow-code-shell);
+  overflow: visible;
+}
+
+.adeow-code-highlight,
+.adeow-code-textarea {
+  min-width: var(--adeow-code-content-width);
+  min-height: var(--adeow-code-content-height);
+  margin: 0;
+  padding: 0.75rem 1rem 0.75rem 0.75rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.375rem;
+  tab-size: 2;
+  white-space: pre;
+}
+
+.adeow-code-highlight {
+  color: var(--adeow-code-fg);
+  pointer-events: none;
+}
+
+.adeow-code-line {
+  display: block;
+  min-height: 1.375rem;
+  border-radius: 0.25rem;
+}
+
+.adeow-code-line[data-active-line="true"] {
+  margin-inline: -0.375rem -1rem;
+  padding-inline: 0.375rem 1rem;
+  background: var(--adeow-code-active-line);
+}
+
+.adeow-code-line-number[data-active-line="true"] {
+  margin-inline: -0.375rem -0.5rem;
+  padding-inline: 0.375rem 0.5rem;
+  background: var(--adeow-code-active-line);
+}
+
+.adeow-code-textarea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent !important;
+  caret-color: var(--adeow-code-caret);
+  color: transparent;
+  outline: none;
+  overflow: hidden;
+  resize: none;
+}
+
+.adeow-code-textarea::selection {
+  background: var(--adeow-code-selection);
+  color: transparent;
+}
+
+.adeow-code-token-keyword {
+  color: var(--adeow-code-keyword);
+  font-weight: 700;
+}
+
+.adeow-code-token-function {
+  color: var(--adeow-code-function);
+  font-weight: 650;
+}
+
+.adeow-code-token-type {
+  color: var(--adeow-code-type);
+  font-weight: 650;
+}
+
+.adeow-code-token-string {
+  color: var(--adeow-code-string);
+}
+
+.adeow-code-token-number {
+  color: var(--adeow-code-number);
+}
+
+.adeow-code-token-comment {
+  color: var(--adeow-code-comment);
+  font-style: italic;
+}
+
+.adeow-code-token-builtin {
+  color: var(--adeow-code-builtin);
+}
+
+.adeow-code-token-constant {
+  color: var(--adeow-code-constant);
+}
+
+.adeow-code-token-property {
+  color: var(--adeow-code-property);
+}
+
+.adeow-code-token-tag {
+  color: var(--adeow-code-tag);
+}
+
+.adeow-code-token-attribute {
+  color: var(--adeow-code-attribute);
+}
+
+.adeow-code-token-operator,
+.adeow-code-token-decorator {
+  color: var(--adeow-code-operator);
+}
+
+.adeow-code-token-heading {
+  color: var(--adeow-code-constant);
+  font-weight: 700;
+}
+
+.adeow-code-token-plain {
+  color: var(--adeow-code-fg);
+}
+
+.adeow-code-embed[data-theme="dark"] {
+  --adeow-code-shell: #2c2c2c;
+  --adeow-code-header: #242424;
+  --adeow-code-gutter: #242424;
+  --adeow-code-border: rgba(255, 255, 255, 0.12);
+  --adeow-code-fg: #f5f5f5;
+  --adeow-code-muted: rgba(245, 245, 245, 0.58);
+  --adeow-code-input: rgba(255, 255, 255, 0.06);
+  --adeow-code-input-border: rgba(255, 255, 255, 0.12);
+  --adeow-code-active-line: rgba(13, 153, 255, 0.14);
+  --adeow-code-selection: rgba(13, 153, 255, 0.24);
+  --adeow-code-caret: #ffffff;
+  --adeow-code-accent: #0d99ff;
+  --adeow-code-keyword: #fda4af;
+  --adeow-code-function: #f8fafc;
+  --adeow-code-type: #bfdbfe;
+  --adeow-code-string: #fde68a;
+  --adeow-code-number: #fdba74;
+  --adeow-code-comment: #94a3b8;
+  --adeow-code-builtin: #67e8f9;
+  --adeow-code-constant: #fcd34d;
+  --adeow-code-property: #e2e8f0;
+  --adeow-code-tag: #7dd3fc;
+  --adeow-code-attribute: #a5f3fc;
+  --adeow-code-operator: #cbd5e1;
+  --adeow-code-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 14px 28px rgba(0, 0, 0, 0.24);
+}
+
+.adeow-sticky-embed {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--adeow-sticky-ink, #172031) 12%,
+      var(--adeow-sticky-color, #fff3bf)
+    );
+  border-radius: 0.5rem;
+  background: var(--adeow-sticky-color, #fff3bf);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  color: var(--adeow-sticky-ink, #172031);
+  font-family: var(--font-manrope), Assistant, sans-serif;
+}
+
+.adeow-sticky-embed::before {
+  display: none;
+}
+
+.adeow-sticky-embed::after {
+  display: none;
+}
+
+.adeow-sticky-embed:focus-within {
+  border-color: color-mix(in srgb, #0d99ff 78%, var(--adeow-sticky-color, #fff3bf));
+  box-shadow:
+    0 0 0 2px rgba(13, 153, 255, 0.28),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.adeow-sticky-header {
+  display: none;
+}
+
+.adeow-sticky-badge {
+  display: none;
+}
+
+.adeow-sticky-textarea {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  flex: 1;
+  width: 100%;
+  padding: 1rem 1rem 0.5rem;
+  border: 0;
+  background: transparent !important;
+  color: var(--adeow-sticky-ink, #172031);
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 650;
+  line-height: 1.32;
+  outline: none;
+  resize: none;
+}
+
+.adeow-sticky-textarea::selection {
+  background: color-mix(in srgb, var(--adeow-sticky-ink, #172031) 18%, transparent);
+  color: var(--adeow-sticky-ink, #172031);
+}
+
+.adeow-sticky-textarea::placeholder {
+  color: color-mix(in srgb, var(--adeow-sticky-ink, #172031) 42%, transparent);
+}
+
+.adeow-sticky-author {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0 1rem 0.85rem;
+  color: color-mix(in srgb, var(--adeow-sticky-ink, #172031) 68%, transparent);
+  font-family: var(--font-manrope), Assistant, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .adeow-canvas-tool-button[data-tooltip]::before,
+  .adeow-canvas-tool-button[data-tooltip]::after {
+    position: absolute;
+    left: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 120ms ease,
+      transform 120ms ease;
+  }
+
+  .adeow-canvas-tool-button[data-tooltip]::before {
+    bottom: calc(100% + 0.25rem);
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--popup-bg-color);
+    box-shadow: var(--shadow-island);
+    content: "";
+    transform: translate(-50%, 0.25rem) rotate(45deg);
+  }
+
+  .adeow-canvas-tool-button[data-tooltip]::after {
+    bottom: calc(100% + 0.5rem);
+    max-width: 12rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--border-radius-md);
+    background: var(--popup-bg-color);
+    box-shadow: var(--shadow-island);
+    color: var(--color-on-surface);
+    content: attr(data-tooltip);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.15;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    transform: translate(-50%, 0.25rem);
+    white-space: nowrap;
+  }
+
+  .adeow-canvas-tool-button[data-tooltip]:hover::before,
+  .adeow-canvas-tool-button[data-tooltip]:focus-visible::before,
+  .adeow-canvas-tool-button[data-tooltip]:hover::after,
+  .adeow-canvas-tool-button[data-tooltip]:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .adeow-canvas-tool-button[data-tooltip]:hover::before,
+  .adeow-canvas-tool-button[data-tooltip]:focus-visible::before {
+    transform: translate(-50%, 0) rotate(45deg);
+  }
+
+  .adeow-canvas-toolbar-menu-wrap[data-open="true"]
+    .adeow-canvas-tool-button[data-tooltip]::before,
+  .adeow-canvas-toolbar-menu-wrap[data-open="true"]
+    .adeow-canvas-tool-button[data-tooltip]::after {
+    display: none;
+  }
+}
+
+@media (max-width: 920px) {
+  .adeow-canvas-toolbar {
+    left: 0.5rem;
+    right: 0.5rem;
+    justify-content: flex-start;
+    overflow-x: auto;
+    transform: none;
+    scrollbar-width: none;
+  }
+
+  .adeow-canvas-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .adeow-canvas-toolbar {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+    padding: 0.375rem;
+    border-radius: 1.25rem;
+  }
+
+  .adeow-canvas-toolbar-group {
+    min-height: 2.75rem;
+    padding: 0 0.375rem;
+  }
+
+  .adeow-canvas-tool-button {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adeow-canvas-tool-button,
+  .adeow-canvas-toolbar-menu-button,
+  .adeow-canvas-toolbar-primary-action,
+  .adeow-canvas-stamp-button,
+  .adeow-canvas-tool-button[data-tooltip]::before,
+  .adeow-canvas-tool-button[data-tooltip]::after {
+    transition: none;
+  }
 }
 
 .excalidraw .default-sidebar-trigger,
@@ -861,10 +1723,6 @@ button {
 
   .excalidraw .App-menu_top {
     gap: 0.5rem;
-  }
-
-  .excalidraw:not(.excalidraw--mobile) .shapes-section {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
   }
 
   .adeow-top-right-dock {
